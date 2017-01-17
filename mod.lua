@@ -1,1 +1,1 @@
-
+local TSoI = RegisterMod("TheSpeccingofIsaac")
