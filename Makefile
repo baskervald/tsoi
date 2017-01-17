@@ -3,18 +3,14 @@ BASE_RES = res
 XML_CONTENT = $(wildcard $(BASE_RES)/content/*.xml)
 RESOURCES = $(wildcard $(BASE_RES)/resources/*)
 
-.PHONY : clean
+.PHONY : clean install
 
 build: build/main.lua build/resources build/content
 
-build/main.lua: $(LUA_FILES) mod.lua
+build/main.lua: $(LUA_FILES) main.lua
 	@echo "MAIN.LUA"
 	@mkdir -p $(@D)
-	cat mod.lua > $@
-	for file in $(LUA_FILES); \
-	do \
-		cat $$file >> $@; \
-	done
+	python3 modrequire.py main.lua build/main.lua
 
 build/resources: $(RESOURCES)
 	@echo "RESOURCES"
@@ -31,3 +27,7 @@ build/content: $(XML_CONTENT)
 clean:
 	@echo "CLEAN"
 	rm -r build
+
+install: build
+	@echo "INSTALL"
+	cp -rf build ~/.local/share/binding\ of\ isaac\ afterbirth+\ mods/
