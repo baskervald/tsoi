@@ -16,9 +16,11 @@ local char_skills = {
 
 local Tree = {}
 
-function Tree:new(character, seed)
+function Tree:new(character)
   local ret = {
-    __index = Tree
+    __index = Tree,
+    -- TODO: modify rng method to avoid problems on Windows
+    rng = RNG()
   }
   if char_skills[character] ~= nil then
     ret.skills = char_skills[character]
@@ -26,13 +28,9 @@ function Tree:new(character, seed)
     ret.skills = eden_skills()
   end
   setmetatable(ret, self)
-  self:plant_seed(seed)
   return ret
 end
 
-function Tree:plant_seed(seed)
-  math.randomseed(seed)
-end
 
 function eden_skills()
   ret = {}
